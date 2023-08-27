@@ -1,0 +1,27 @@
+<%- include('../layouts/header.ejs',{
+    title: "blog: about us"
+}) %>
+<section class="login-submit py-5">
+<div class="container">
+    <div class="card w-50 mx-auto">
+        <div class="card-body border">
+            <div class="card-title border shadow w-50 mx-auto">
+                <h2 class="text-center">login</h2>
+            </div>
+            <form method="post" class=" border p-3" action="/login-submit">
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input class="form-control" type="email" name="email" id="" placeholder="Enter your valid email">
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input class="form-control" type="password" name="password" id="" placeholder="Enter your password">
+                </div>
+                <button class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+</section>
+<%- include('../layouts/footer.ejs') %>
