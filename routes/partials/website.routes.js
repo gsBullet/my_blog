@@ -16,6 +16,6 @@ router
 
     .get('/contact', (req, res) => {
         return res.render('contact')
-    })
+    });
 
 module.exports = () => router

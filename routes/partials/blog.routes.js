@@ -3,7 +3,6 @@ const isAuthMiddleware = require('../../app/middleware/isAuth.middleware')
 const router = express.Router()
 
 router
-    
     .get('/dashboard/blog/create', (req, res) => {
         return res.render('backend/blog_management/create_blog')
     })

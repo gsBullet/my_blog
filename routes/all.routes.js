@@ -4,15 +4,15 @@ const blogRoutes = require('./partials/blog.routes')
 const dahsboardRoutes = require('./partials/dahsboard.routes')
 const authRoutes = require('./partials/auth.routes')
 const websiteRouter = require('./partials/website.routes');
-const isAuthMiddleware = require('../app/middleware/isAuth.middleware');
+const userRoutes = require('./partials/user.routes');
 
 
 
-router
-    .use(websiteRouter())
-    .use(isAuthMiddleware())
-    .use(authRoutes())
-    .use(blogRoutes())
-    .use(dahsboardRoutes());
+
+router.use(websiteRouter());
+router.use(authRoutes());
+router.use(dahsboardRoutes());
+router.use(blogRoutes());
+router.use(userRoutes());
 
 module.exports = () => router

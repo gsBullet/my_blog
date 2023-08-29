@@ -1,6 +1,5 @@
 
 const isAuth = (req,res,next)=>{
-    console.log(req);
     if(req.session.isAuth){
         next();
     }
