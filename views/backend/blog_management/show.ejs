@@ -1,0 +1,53 @@
+<%- include('../layouts/head',{
+    title: "Blog Managemnt"
+}) %>
+
+<%- include('../layouts/backendTopNav') %>
+<div id="layoutSidenav">
+    <%- include('../layouts/backendSideNav') %>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h3 class="mt-4">Static Navigation</h3>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Static Navigation</li>
+                </ol>
+
+                <div class="border">
+                    <h3 class="text-center">Dashboard content</h3>
+                </div>
+                <div class="table">
+                    <div class="card">
+                        <div class="card-header">
+                            All Data
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between ">
+                                <div class="left">
+                                    showing 1 to 10 of 70 emtites
+                                </div>
+                                <div class="right">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+<%- include('../layouts/backendJSScript') %>
