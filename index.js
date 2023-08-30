@@ -30,6 +30,17 @@ server.set('views', './views');
 server.use(express.static('public'));
 
 server.use((req, res, next) => {
+    server.locals.error={};
+    server.locals.old ={};
+    if(req.session.error){
+        server.locals.error = req.session.error;
+        req.session.error={};
+    }
+    if(req.session.old){
+        server.locals.old = req.session.old;
+        req.session.old={};
+    }
+    // server.locals.error = req.session.error;
     checkAuthMiddleware(server,req,res,next);
     next();
 })
@@ -49,4 +60,3 @@ mongoose.connect("mongodb+srv://my_blog_database:85OmFwUrmMZXcFzf@cluster0.dqs42
         console.log(`mongoose is listening on http://127.0.0.1:${port}`)
     })
 });
-

@@ -1,26 +1,17 @@
 const express = require('express')
-const isAuthMiddleware = require('../../app/middleware/isAuth.middleware');
-const {
-    default: mongoose
-} = require('mongoose');
+const userModels = require('../../app/models/user.models');
 const router = express.Router()
-const User = mongoose.model('users', {
-    name: String,
-    email: String,
-    password: Number,
-    phone: String,
-    role: String
-});
+
 
 
 router
     .get('/dashboard/user', async (req, res) => {
-        const data = await User.find();
+        const data = await userModels.find();
         return res.send(data);
         // return res.render('backend/blog_management/all')
     })
     .get('/dashboard/user/create', async (req, res) => {
-        const data = new User({
+        const data = new userModels({
             name: 'customer',
             email: 'customer@gmail.com',
             password: 114400,
@@ -40,7 +31,7 @@ router
         // let name = req.query.name;
         // let email = req.query.email;
         // let password = req.query.password;
-        const data = await User.where({
+        const data = await userModels.where({
             _id: id
         }).findOne();
         data.password = 4521;
@@ -51,7 +42,7 @@ router
     })
     .get('/dashboard/user/:id/delete', async (req, res) => {
         let id = req.params.id;
-        const data = await User.where({
+        const data = await userModels.where({
             _id: id
         }).deleteOne();
         return res.send(data);
@@ -59,7 +50,7 @@ router
     })
     .get('/dashboard/user/:id', async (req, res) => {
         let id = req.params.id;
-        const data = await User.where({
+        const data = await userModels.where({
             _id: id
         }).findOne();
         return res.send(data);

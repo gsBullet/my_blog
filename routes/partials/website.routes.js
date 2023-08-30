@@ -13,6 +13,9 @@ router
     .get('/login', (req, res) => {
         return res.render('auth/login')
     })
+    .get('/signup', (req, res) => {
+        return res.render('auth/signup')
+    })
 
     .get('/contact', (req, res) => {
         return res.render('contact')
