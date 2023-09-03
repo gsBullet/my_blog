@@ -6,7 +6,9 @@ const bodyParser = require('body-parser');
 const allRoutes = require('./routes/all.routes');
 const checkAuthMiddleware = require('./app/middleware/checkAuth.middleware');
 const mongoose = require('mongoose');
+const db_url = require('./config/db.config');
 server.set('json spaces', 4);
+
 
 
 // parse application/x-www-form-urlencoded
@@ -32,12 +34,17 @@ server.use(express.static('public'));
 server.use((req, res, next) => {
     server.locals.error={};
     server.locals.old ={};
+    server.locals.old_body ={};
     if(req.session.error){
         server.locals.error = req.session.error;
         req.session.error={};
     }
     if(req.session.old){
         server.locals.old = req.session.old;
+        req.session.old={};
+    }
+    if(req.session.old_body){
+        server.locals.old_body = req.session.old_body;
         req.session.old={};
     }
     // server.locals.error = req.session.error;
@@ -53,10 +60,11 @@ server.use(allRoutes());
 
 
 
-mongoose.connect("mongodb+srv://my_blog_database:85OmFwUrmMZXcFzf@cluster0.dqs42jv.mongodb.net/blogDb")
+mongoose.connect(db_url)
 .then(()=>{
     // console.log('mongoose is connect');
     server.listen(port, () => {
         console.log(`mongoose is listening on http://127.0.0.1:${port}`)
     })
 });
+

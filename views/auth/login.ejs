@@ -11,11 +11,17 @@
             <form method="post" class=" border p-3" action="/login-submit">
                 <div class="form-group">
                     <label for="">Email</label>
-                    <input class="form-control" type="email" name="email" id="" placeholder="Enter your valid email">
+                    <input class="form-control" value="<%= old_body.email %>" type="email" name="email" id="" placeholder="Enter your valid email">
+                    <div class="text-danger">
+                        <%= error.email %>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="">Password</label>
-                    <input class="form-control" type="password" name="password" id="" placeholder="Enter your password">
+                    <input class="form-control" value="<%= old_body.password %>" type="password" name="password" id="" placeholder="Enter your password">
+                    <div class="text-danger">
+                        <%= error.password %>
+                    </div>
                 </div>
                 <button class="btn btn-success">Submit</button>
                 <div>
