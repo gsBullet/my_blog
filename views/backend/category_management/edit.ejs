@@ -1,0 +1,43 @@
+<%- include('../layouts/head',{
+    title: "Blog Managemnt"
+}) %>
+
+<%- include('../layouts/backendTopNav') %>
+<div id="layoutSidenav">
+    <%- include('../layouts/backendSideNav') %>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h3 class="mt-4">Update Category</h3>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item active">update</li>
+                </ol>
+
+                <!-- <div class="border">
+                    <h3 class="text-center">Dashboard content</h3>
+                </div> -->
+                <form method="POST" action="/dashboard/category/<%= data._id %>/edit">
+                    <div class="card">
+                        <div class="card-header">
+                            Edit
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                              <label for="title" class="form-label">Title</label>
+                              <input value="<%= data.title %>" type="text" name="title" id="title" class="form-control" placeholder="" aria-describedby="helpId">
+                              
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <Button  class="btn btn-info">Submit</Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+    </div>
+</div>
+<%- include('../layouts/backendJSScript') %>

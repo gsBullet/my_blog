@@ -7,7 +7,7 @@ const writterModel = require("./writter.model");
 const categoriesModel = require("./categories.model");
 const translatorModel = require("./translator.model");
 
-module.exports = mongoose.model('blogs', {
+module.exports = mongoose.model('blogs', mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -41,7 +41,7 @@ module.exports = mongoose.model('blogs', {
     },
     translator: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: false,
         ref: translatorModel
     },
     thumb_images: {
@@ -55,7 +55,7 @@ module.exports = mongoose.model('blogs', {
     },
     status: {
         type: Boolean,
-        default: false
+        default: true
     },
 
     view:{
@@ -69,4 +69,4 @@ module.exports = mongoose.model('blogs', {
 
 }, {
     timestamps: true
-});
+}));

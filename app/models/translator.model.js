@@ -1,6 +1,4 @@
-const {
-    Timestamp
-} = require("mongodb");
+
 const {
     default: mongoose, Schema
 } = require("mongoose");

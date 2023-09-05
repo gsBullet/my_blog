@@ -1,0 +1,56 @@
+<%- include('../layouts/head',{
+    title: "Blog Managemnt"
+}) %>
+
+<%- include('../layouts/backendTopNav') %>
+<div id="layoutSidenav">
+    <%- include('../layouts/backendSideNav') %>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="">
+                    <div class="row">
+                        <div class="col-8">
+                            <h3 class="mt-4">Show data</h3>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                <li class="breadcrumb-item active">show data</li>
+                            </ol>
+
+                        </div>
+                        <div class="col-4 text-center mt-5">
+                            <a class="btn btn-info" href="/dashboard/category">Back</a>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+                
+
+                <div class="row justify-content-center my-5">
+                    <div class=" col-lg-5">
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Title</td>
+                                        <td>:</td>
+                                        <td><%= data.title %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Creator</td>
+                                        <td>:</td>
+                                        <td><%= data.creator?.username%></td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+<%- include('../layouts/backendJSScript') %>

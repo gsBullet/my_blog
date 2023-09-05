@@ -1,3 +1,3 @@
 git add .
-git commit -m " blog management app  mongoose model, database seeding demo data"
+git commit -m " blog management app  Category management complete"
 git push -u origin main

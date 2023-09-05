@@ -77,7 +77,9 @@ router
                 let preUrl = req.session.prev_auth_url;
                 if (preUrl) {
                     delete req.session.prev_auth_url;
-                    return res.redirect(preUrl)
+                    if(preUrl != '/favicon.ico'){
+                        return res.redirect(preUrl)
+                    }
                 }
                 return res.redirect('/dashboard')
             }

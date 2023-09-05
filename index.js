@@ -32,6 +32,7 @@ server.set('views', './views');
 server.use(express.static('public'));
 
 server.use((req, res, next) => {
+    // console.log(req);
     server.locals.error={};
     server.locals.old ={};
     server.locals.old_body ={};
