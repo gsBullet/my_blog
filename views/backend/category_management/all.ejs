@@ -8,10 +8,10 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h3 class="mt-4">Static Navigation</h3>
+                <h3 class="mt-4">Category</h3>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Static Navigation</li>
+                    <li class="breadcrumb-item active">Category</li>
                 </ol>
 
                 <div class="border">
@@ -19,15 +19,23 @@
                 </div>
                 <div class="table">
                     <div class="card">
-                        <div class="card-header">
-                            All Category
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="left">
+                                All Category
+                            </div>
+                            <div class="right">
+                                <button class="btn btn-info btn-primary">export(<span
+                                        class="total_select">0</span>)</button>
+                                <button class="btn btn-info btn-danger">Delete(<span
+                                        class="total_select">0</span>)</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-top d-flex justify-content-between flex-wrap gap-2">
 
                                 <div class="datatable-dropdown">
                                     <label class="d-flex gap-2 align-items-center">
-                                        <select onchange="set_onChage()"  class="form-select">
+                                        <select onchange="set_onChage()" class="form-select">
                                             <option value="5" <%= limit==5 && 'selected' %>>5</option>
                                             <option value="10" <%= limit==10 && 'selected' %>>10</option>
                                             <option value="15" <%= limit==15 && 'selected' %>>15</option>
@@ -41,13 +49,13 @@
                                 </div>
                                 <div class="datatable-search">
                                     <form class="d-flex" onsubmit="search()" action="">
-                                        <input value="<%= key %>" id="search_box" class="form-control" placeholder="Search..." type="search"
-                                        title="Search">
-                                        <button class="btn btn-info btn-sm">
+                                        <input value="<%= key %>" id="search_box" class="form-control"
+                                            placeholder="Search..." type="search" title="Search">
+                                        <button class="btn btn-info btn-sm mx-sm-2">
                                             <i class="fa fa-search" aria-hidden="true"></i>
                                         </button>
                                     </form>
-                                    
+
                                 </div>
 
                             </div>
@@ -69,7 +77,8 @@
                                         <% data.forEach((item)=> { %>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" class="form-check">
+                                                <input onchange="bulk_handler.add_item(`<%=item._id %>`)"
+                                                    type="checkbox" class="form-check">
                                             </td>
                                             <td>
                                                 <%= item._id %>
@@ -120,7 +129,8 @@
                         <div class="card-footer">
                             <div class="d-flex justify-content-between ">
                                 <div class="left">
-                                    showing <span id="start_point"></span> to <span id="end_point"></span> of <%= count %> entites
+                                    showing <span id="start_point"></span> to <span id="end_point"></span> of
+                                    <%= count %> entites
                                 </div>
                                 <div class="right">
                                     <nav aria-label="Page navigation">
@@ -141,21 +151,56 @@
     </div>
 </div>
 <script>
-    function search(){
+
+    let bulk_handler = {
+        selected_item: [],
+        selected_count: function() {
+            return this.selected_item.length;
+        },
+        find_item: function(id) {
+            return this.selected_item.find((i) =>i==id);
+        },
+        add_item: function(id) {
+            if (this.find_item(id)) {
+                this.remove_item(id);
+            } else {
+                this.selected_item.push(id);
+                this.render()
+            }
+        },
+        remove_item: function(id) {
+            this.selected_item = this.selected_item.filter((i) => i != id)
+            this.render();
+        },
+        remove_all: function() {
+            this.selected_item = [];
+            this.render();
+        },
+        render: function() {
+            let total_select = [...document.querySelectorAll('.total_select')];
+            total_select.forEach((element) => {
+                element.innerHTML = this.selected_count();
+            })
+        }
+    }
+
+    function search() {
         event.preventDefault();
         let url = new URL(location.href);
         let value = document.getElementById('search_box').value;
         // let limit = url.searchParams.get('limit');
-        url.searchParams.set("key",value);
+        url.searchParams.set("key", value);
         location.href = url.href;
 
     }
-    function set_onChage(){
+
+    function set_onChage() {
         let url = new URL(location.href);
         let limit = url.searchParams.get('limit');
         url.searchParams.set("limit", event.target.value);
         location.href = url.href;
     }
+
     function createPagination(paginationAmount = 10, dataCount = 0, currentPage = 1) {
         const pageCount = Math.ceil(dataCount / paginationAmount);
         const maxDisplayPage = 5;
@@ -193,8 +238,8 @@
         }
 
 
-        document.getElementById("start_point").innerHTML= (currentPage*paginationAmount)-paginationAmount;
-        document.getElementById("end_point").innerHTML= (currentPage*paginationAmount);
+        document.getElementById("start_point").innerHTML = (currentPage * paginationAmount) - paginationAmount;
+        document.getElementById("end_point").innerHTML = (currentPage * paginationAmount);
         for (let i = startPage; i <= endPage; i++) {
             paginationHTML += `<li class="page-item">
                 <a class="page-link" onclick="goToPage(${i})" href="/dashboard/category?page=${i}">${i}</a>
@@ -227,7 +272,7 @@
     }
 
     // Assuming you have an element with id "paginate" in your HTML
-    
+
     document.getElementById("paginate").innerHTML = createPagination(+`<%= limit %>`, +`<%= count %>`, +`<%= page %>`);
 </script>
 
