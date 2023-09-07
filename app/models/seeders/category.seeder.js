@@ -38,6 +38,14 @@ module.exports = ()=> mongoose.connect(db_url)
         await categoriesModel.deleteMany({});
         let response = await categoriesModel.insertMany(categories);
         console.log('\n');
+        // for (let index = 0; index < 50; index++) {
+        //     await categoriesModel.create({
+        //         title:('category')+(index+1),
+        //         creator: '64f5d087dd6cc063a71456cb'
+        //     })
+
+            
+        // }
 
         let checkCreator = await categoriesModel.findOne({}).populate('creator');
         // console.log(checkCreator);
