@@ -83,12 +83,27 @@ const controller = {
             data
         })
     },
+    update_status: async function(req,res){
+        let {id,status} = req.body;
+        console.log(id,status);
+        let response = await categoriesModel.updateOne({_id:id},{status: status}).exec();
+        console.log(response);
+        return res.status(200).json(response);
+    },
+     
     export_info: async function(req,res){
         let exp_info = req.body.exp_info;
 
         let response = await categoriesModel.where("_id").in(exp_info).find().populate('creator').exec();
         return res.status(200).json(response);
-    }
+    },
+    delete_by_ids: async function(req,res){
+        let exp_info = req.body.exp_info;
+
+        let response = await categoriesModel.where("_id").in(exp_info).deleteMany().exec();
+        return res.status(200).json(response);
+    },
+    
 
 }
 

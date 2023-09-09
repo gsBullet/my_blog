@@ -27,8 +27,8 @@
                                 <button onclick="bulk_handler.export_selected()"
                                     class="btn btn-info btn-primary">export(<span
                                         class="total_select">0</span>)</button>
-                                <button class="btn btn-info btn-danger">Delete(<span
-                                        class="total_select">0</span>)</button>
+                                <button onclick="bulk_handler.export_delete()"
+                                    class="btn btn-info btn-danger">Delete(<span class="total_select">0</span>)</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -94,6 +94,7 @@
                                                 <div class="form-check form-switch d-inline-block">
                                                     <input <%= item.status?'checked':'' %> class="form-check-input"
                                                         type="checkbox" role="switch"
+                                                        onchange="bulk_handler.changeStatus('<%= item._id %>')"
                                                         id="flexSwitchCheckChecked<%= item._id %>">
                                                     <label class="form-check-label"
                                                         for="flexSwitchCheckChecked<%= item._id %>"></label>
@@ -184,8 +185,26 @@
                 element.innerHTML = this.selected_count();
             })
         },
+     
+        export_delete: async function () {
+            if (this.selected_item.length && window.confirm("Confirm delete?")) {
+                let response = await fetch('/dashboard/category/delete-by-id', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        exp_info: this.selected_item
+                    })
+                })
+                let deleteIds = await response.json();
+                if (deleteIds.deletedCount) {
+                    window.location.reload();
+                }
+            }
+        },
         export_selected: async function () {
-            if (this.selected_item.length && window.confirm("Confirm?")) {
+            if (this.selected_item.length && window.confirm("export?")) {
                 let response = await fetch('/dashboard/category/export-info', {
                     method: 'POST',
                     headers: {
@@ -211,13 +230,29 @@
                         creator._id
                     ])
                 })
-                console.log(rows);
                 csvExport.setFileName("categories.csv")
                     .setColumns(['id', 'title', 'creator', 'creator_id'])
                     .addRows(rows)
                     .exportFile();
             }
-        }
+        },
+        changeStatus: async function (id) {
+            let event_status = event.target.checked;
+            console.log(event_status,id);
+            let response = await fetch('/dashboard/category/update-status', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id,
+                    status: event_status ? 1 : 0
+                })
+            })
+            let res_status = await response.json();
+            console.log(res_status);
+
+        },
 
     }
 
