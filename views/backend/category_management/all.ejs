@@ -24,7 +24,8 @@
                                 All Category
                             </div>
                             <div class="right">
-                                <button class="btn btn-info btn-primary">export(<span
+                                <button onclick="bulk_handler.export_selected()"
+                                    class="btn btn-info btn-primary">export(<span
                                         class="total_select">0</span>)</button>
                                 <button class="btn btn-info btn-danger">Delete(<span
                                         class="total_select">0</span>)</button>
@@ -150,17 +151,18 @@
 
     </div>
 </div>
+<script src="/js/csvExport.js"></script>
 <script>
-
     let bulk_handler = {
+
         selected_item: [],
-        selected_count: function() {
+        selected_count: function () {
             return this.selected_item.length;
         },
-        find_item: function(id) {
-            return this.selected_item.find((i) =>i==id);
+        find_item: function (id) {
+            return this.selected_item.find((i) => i == id);
         },
-        add_item: function(id) {
+        add_item: function (id) {
             if (this.find_item(id)) {
                 this.remove_item(id);
             } else {
@@ -168,21 +170,35 @@
                 this.render()
             }
         },
-        remove_item: function(id) {
+        remove_item: function (id) {
             this.selected_item = this.selected_item.filter((i) => i != id)
             this.render();
         },
-        remove_all: function() {
+        remove_all: function () {
             this.selected_item = [];
             this.render();
         },
-        render: function() {
+        render: function () {
             let total_select = [...document.querySelectorAll('.total_select')];
             total_select.forEach((element) => {
                 element.innerHTML = this.selected_count();
             })
+        },
+        export_selected: function () {
+            if (window.confirm("Confirm?")) {
+                csvExport.setFileName("categories.csv")
+                    .setColumns(['id', 'title', 'creator'])
+                    .addRows([
+                        [1, 'aaa', 'user1'],
+                        [2, 'bbb', 'user2'],
+                        [3, 'ccc', 'user3']
+                    ])
+                    .exportFile();
+            }
         }
+
     }
+
 
     function search() {
         event.preventDefault();
