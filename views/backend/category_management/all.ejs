@@ -184,15 +184,37 @@
                 element.innerHTML = this.selected_count();
             })
         },
-        export_selected: function () {
-            if (window.confirm("Confirm?")) {
-                csvExport.setFileName("categories.csv")
-                    .setColumns(['id', 'title', 'creator'])
-                    .addRows([
-                        [1, 'aaa', 'user1'],
-                        [2, 'bbb', 'user2'],
-                        [3, 'ccc', 'user3']
+        export_selected: async function () {
+            if (this.selected_item.length && window.confirm("Confirm?")) {
+                let response = await fetch('/dashboard/category/export-info', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        exp_info: this.selected_item
+                    })
+                })
+                let categories = await response.json();
+
+                let rows = [];
+                categories.forEach((i) => {
+                    let {
+                        _id: id,
+                        title,
+                        creator
+                    } = i;
+                    rows.push([
+                        id,
+                        title,
+                        creator.username,
+                        creator._id
                     ])
+                })
+                console.log(rows);
+                csvExport.setFileName("categories.csv")
+                    .setColumns(['id', 'title', 'creator', 'creator_id'])
+                    .addRows(rows)
                     .exportFile();
             }
         }

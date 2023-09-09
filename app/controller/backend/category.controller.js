@@ -83,6 +83,12 @@ const controller = {
             data
         })
     },
+    export_info: async function(req,res){
+        let exp_info = req.body.exp_info;
+
+        let response = await categoriesModel.where("_id").in(exp_info).find().populate('creator').exec();
+        return res.status(200).json(response);
+    }
 
 }
 
