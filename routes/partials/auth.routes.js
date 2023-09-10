@@ -3,6 +3,7 @@ const isAuthMiddleware = require('../../app/middleware/isAuth.middleware');
 const userModels = require('../../app/models/user.models');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 router
@@ -74,6 +75,14 @@ router
             if(passMatch){
                 req.session.isAuth = true;
                 req.session.user = user;
+                let data ={
+                    username: user.username,
+                    email: user.email,
+                    image_url: '',
+                    _id: user._id,
+                }
+                let token = await jwt.sign(data,"e42f16cd-194d-46a3-a40a-4c8c2ac04d79");
+                res.cookie('token',token);
                 let preUrl = req.session.prev_auth_url;
                 if (preUrl) {
                     delete req.session.prev_auth_url;

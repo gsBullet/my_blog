@@ -7,6 +7,8 @@ const allRoutes = require('./routes/all.routes');
 const checkAuthMiddleware = require('./app/middleware/checkAuth.middleware');
 const mongoose = require('mongoose');
 const db_url = require('./config/db.config');
+const cookieParser = require('cookie-parser');
+server.use(cookieParser());
 server.set('json spaces', 4);
 
 
