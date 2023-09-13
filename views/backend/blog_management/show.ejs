@@ -8,41 +8,44 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h3 class="mt-4">Static Navigation</h3>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Static Navigation</li>
-                </ol>
+                <div class="">
+                    <div class="row">
+                        <div class="col-8">
+                            <h3 class="mt-4">Show data</h3>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                <li class="breadcrumb-item active">show data</li>
+                            </ol>
 
-                <div class="border">
-                    <h3 class="text-center">Dashboard content</h3>
+                        </div>
+                        <div class="col-4 text-center mt-5">
+                            <a class="btn btn-sm btn-outline-success" href="/dashboard/blog"><i class="fas fa-angle-left" aria-hidden="true"></i> Back</a>
+                        </div>
+                    </div>
+                    <hr/>
                 </div>
-                <div class="table">
-                    <div class="card">
-                        <div class="card-header">
-                            All Data
-                        </div>
+                
+
+                <div class="row justify-content-center my-5">
+                    <div class=" col-lg-5">
                         <div class="card-body">
-                            
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Title</td>
+                                        <td>:</td>
+                                        <td><%= data.title %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Creator</td>
+                                        <td>:</td>
+                                        <td><%= data.creator?.username%></td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
                         </div>
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between ">
-                                <div class="left">
-                                    showing 1 to 10 of 70 emtites
-                                </div>
-                                <div class="right">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>

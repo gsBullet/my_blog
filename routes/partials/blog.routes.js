@@ -1,20 +1,14 @@
 const express = require('express')
+const blogController = require('../../app/controller/backend/blog.controller')
 const router = express.Router()
 
 router
-    .get('/dashboard/blog/create', (req, res) => {
-        return res.render('backend/blog_management/create_blog')
-    })
-    .get('/dashboard/blog/:id/edit', (req, res) => {
-        return res.render('backend/blog_management/edit')
-    })
-    .get('/dashboard/blog/:id', (req, res) => {
-        return res.render('backend/blog_management/show')
-    })
+    .get('/dashboard/blog/create', blogController.create)
+    .post('/dashboard/blog/create', blogController.store)
+    .get('/dashboard/blog/:id/edit', blogController.edit)
+    .get('/dashboard/blog/:id', blogController.show)
 
-    .get('/dashboard/blog', (req, res) => {
-        return res.render('backend/blog_management/all')
-    })
+    .get('/dashboard/blog',blogController.all)
 
 
 module.exports = () => router

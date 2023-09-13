@@ -40,22 +40,28 @@ module.exports = mongoose.model('blogs', mongoose.Schema({
         default: Date.now
     },
     translator: {
-        type: Schema.Types.ObjectId,
+        type: [Schema.Types.ObjectId],
         required: false,
         ref: translatorModel
     },
-    thumb_images: {
+    thumb_image: {
         type: String,
-        required: true
+        required: false
     },
     related_images: [String],
     published: {
         type: Boolean,
-        default: false
+        required: false
+    },
+    tags:{
+        type: Array,
+        default: [],
+        require: false,
+
     },
     status: {
         type: Boolean,
-        default: true
+        required: false
     },
 
     view:{

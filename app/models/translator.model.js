@@ -6,9 +6,9 @@ const userModels = require("./user.models");
 
 
 module.exports = mongoose.model('translators', mongoose.Schema({
-    title: {
+    name: {
         type: String,
-        default: true
+        required: true,
     },
     image:String,
     description:String,

@@ -1,67 +1,152 @@
 <%- include('../layouts/head',{
-    title: "Blog Managemnt"
+    title: "Blog Managemnt "
 }) %>
-
+<link rel="stylesheet" href="/dashboard/plugins/select2/css_select2.min.css">
+<script src="/dashboard/plugins/select2/js_select2.min.js"></script>
+<script src="/dashboard/plugins/jQuery/tinymce.min.js"></script>
 <%- include('../layouts/backendTopNav') %>
 <div id="layoutSidenav">
     <%- include('../layouts/backendSideNav') %>
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h3 class="mt-4">Static Navigation</h3>
+                <h3 class="mt-4">Create Blog</h3>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Static Navigation</li>
+                    <li class="breadcrumb-item active">Blog</li>
                 </ol>
-
+                <!-- 
                 <div class="border">
                     <h3 class="text-center">Dashboard content</h3>
-                </div>
-                <form method="POST" action="#">
-                    <div class="card">
+                </div> -->
+                <form method="POST" onsubmit="saveData()" id="form_error" action="/dashboard/blog/create">
+                    <div class="card my-5">
                         <div class="card-header">
-                            Create Blog
+                            <div class="d-flex justify-content-between">
+                                <h3>
+
+                                    Create
+                                </h3>
+                                <div>
+                                    <a class="btn btn-sm btn-outline-success" href="/dashboard/blog">
+                                       <i class="fa fa-arrow-left" aria-hidden="true"></i> back
+                                    </a>
+                                </div>
+                            </div>
+                            
                         </div>
                         <div class="card-body">
-                            <div class="form-group mb-3">
-                              <label for="title" class="form-label">Title</label>
-                              <input type="text" name="title" id="title" class="form-control" placeholder="" aria-describedby="helpId">
-                              
+                            <div class="row">
+                                <div class="col-lg-8" style="border-right:2px solid gray">
+                                    <div class="form-group mb-3">
+                                        <label for="title" class="form-label">Title</label>
+                                        <input type="text" name="title" id="title" class="form-control"
+                                            placeholder="title">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="short_description" class="form-label">short_description</label>
+                                        <textarea type="text" name="short_description" id="short_description"
+                                            class="form-control"></textarea>
+
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="description" class="form-label">description</label>
+                                        <textarea type="text" name="description" id="description"
+                                            class="form-control"></textarea>
+
+                                    </div>
+                                    <div class="seo_info">
+                                        <h3>SEO info</h3>
+                                        <div class="form-group mb-3">
+                                            <label for="seo_title" class="form-label">Seo Title</label>
+                                            <input type="text" name="seo_title" id="seo_title" class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seo_description" class="form-label">seo description</label>
+                                            <textarea type="text" name="seo_description" id="seo_description"
+                                                class="form-control">
+                                            </textarea>
+
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seo_keys" class="form-label">seo_keys</label>
+                                            <textarea type="text" name="seo_keys" id="seo_keys" class="form-control">
+                                            </textarea>
+
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="tags" class="form-label">tags</label>
+                                            <select type="text" multiple name="tags[]" id="tags"
+                                                class="form-control select_tags">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="category" class="form-label">category</label>
+                                        <select multiple name="category[]" id="category"
+                                            class="form-select category_select">
+                                            <% categories.forEach(category => { %>
+                                            <option value="<%= category._id %>"><%= category.title %></option>
+                                            <% }) %>
+
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="writter" class="form-label">writter</label>
+                                        <select name="writter[]" id="writter" class="form-select author_select">
+                                            <% writters.forEach(writter => { %>
+                                            <option value="<%= writter._id %>"><%= writter.name %></option>
+                                            <% }) %>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="translator" class="form-label">translator</label>
+                                        <select multiple name="translator[]" id="translator"
+                                            class="form-select translator_select">
+                                            <% translators.forEach(translator => { %>
+                                            <option value="<%= translator._id %>"><%= translator.name %></option>
+                                            <% }) %>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="thumb_image">thumb_images</label>
+                                        <input type="file" name="thumb_image" id="thumb_image" accept="image/*"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="related_images">related_images</label>
+                                        <input multiple type="file" name="related_images[]" id="related_images"
+                                            accept="image/*" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="writting_date" class="form-label">writting_date</label>
+                                        <input type="date" name="writting_date" id="writting_date" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <div>
+                                            <label for="published" class="form-label"> is published</label>
+                                        </div>
+                                        <label for="yes">
+                                            <input type="radio" name="published" id="yes" value="yes">Yes
+                                        </label> &nbsp; &nbsp;
+                                        <label for="no">
+                                            <input type="radio" name="published" id="no" value="no"> No
+                                        </label>
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="category" class="form-label">category</label>
-                                <input type="text" name="category" id="category" class="form-control" placeholder="" aria-describedby="helpId">
-                                
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="author" class="form-label">author</label>
-                                <input type="text" name="author" id="author" class="form-control" placeholder="" aria-describedby="helpId">
-                                
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="images" class="form-label">images</label>
-                                <input type="file" name="images" id="images" class="form-control" placeholder="" aria-describedby="helpId">
-                                
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="tags" class="form-label">tags</label>
-                                <input type="text" name="tags" id="tags" class="form-control" placeholder="" aria-describedby="helpId">
-                                
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="short_description" class="form-label">short_description</label>
-                                <textarea type="text" name="short_description" id="short_description" class="form-control" placeholder="" aria-describedby="helpId"></textarea>
-                                
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="description" class="form-label">description</label>
-                                <textarea type="text" name="description" id="description" class="form-control" placeholder="" aria-describedby="helpId"></textarea>
-                                
-                              </div>
                         </div>
                         <div class="card-footer">
                             <Button class="btn btn-info">Submit</Button>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -70,3 +155,69 @@
     </div>
 </div>
 <%- include('../layouts/backendJSScript') %>
+<script>
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#short_description',
+        });
+        tinymce.init({
+            selector: '#description',
+        });
+        let configs = {
+            placeholder: 'choose an option',
+            allowClear: true
+        }
+        $('.category_select').select2(configs);
+        $('.translator_select').select2(configs);
+        $('.author_select').select2(configs);
+        $('.select_tags').select2({
+            ...configs,
+            tags: true
+        });
+    });
+
+    function reset_select() {
+        $('.category_select').val([]).change();
+        $('.translator_select').val([]).change();
+        $('.author_select').val([]).change();
+        $('.select_tags').val([]).change();
+        
+    }
+
+    async function saveData() {
+        event.preventDefault();
+
+        [...document.querySelectorAll('.form_error')].forEach(element => {
+            element.remove()
+        });
+        let formData = new FormData(event.target);
+        let response = await fetch(`${event.target.action}`, {
+            method: event.target.method,
+            body: formData
+        })
+        // console.log(response);
+        let status = response.status;
+        let data = await response.json();
+
+        if (data.hasError) {
+            s_alert("data validation error","error")
+            let errors = data.errors;
+            errors.forEach(element => {
+                document.getElementById(element.path)?.parentNode.insertAdjacentHTML('beforeend',
+                ` <div class = "form_error text-danger" >
+                            ${element.msg}
+                </div>
+                `); 
+                
+            });
+        }
+        else{
+            s_alert("blog created successfully","success");
+            document.getElementById('form_error').reset();
+            reset_select();
+            
+        }
+        console.log(data);
+
+    }
+</script>

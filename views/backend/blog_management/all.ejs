@@ -8,31 +8,39 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h3 class="mt-4">Static Navigation</h3>
+                <h3 class="mt-4">Blog</h3>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Static Navigation</li>
+                    <li class="breadcrumb-item active">Blog</li>
                 </ol>
-
                 <div class="border">
                     <h3 class="text-center">Dashboard content</h3>
                 </div>
                 <div class="table">
                     <div class="card">
-                        <div class="card-header">
-                            All Data
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="left">
+                                All Blog
+                            </div>
+                            <div class="right">
+                                <button onclick="bulk_handler.export_selected()"
+                                    class="btn btn-info btn-primary">export(<span
+                                        class="total_select">0</span>)</button>
+                                <button onclick="bulk_handler.export_delete()"
+                                    class="btn btn-info btn-danger">Delete(<span class="total_select">0</span>)</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-top d-flex justify-content-between flex-wrap gap-2">
 
                                 <div class="datatable-dropdown">
-                                    <label class="d-flex gap-2">
-                                        <select class="form-select">
-                                            <option value="5">5</option>
-                                            <option value="10" selected="">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                            <option value="25">25</option>
+                                    <label class="d-flex gap-2 align-items-center">
+                                        <select onchange="set_onChage()" class="form-select">
+                                            <option value="5" <%= limit==5 && 'selected' %>>5</option>
+                                            <option value="10" <%= limit==10 && 'selected' %>>10</option>
+                                            <option value="15" <%= limit==15 && 'selected' %>>15</option>
+                                            <option value="20" <%= limit==20 && 'selected' %>>20</option>
+                                            <option value="25" <%= limit==25 && 'selected' %>>25</option>
                                         </select>
                                         <div style="min-width: 300px;">
                                             entries per page
@@ -40,8 +48,14 @@
                                     </label>
                                 </div>
                                 <div class="datatable-search">
-                                    <input class="form-control" placeholder="Search..." type="search"
-                                        title="Search within table">
+                                    <form class="d-flex" onsubmit="search()" action="">
+                                        <input value="<%= key %>" id="search_box" class="form-control"
+                                            placeholder="Search..." type="search" title="Search">
+                                        <button class="btn btn-info btn-sm mx-sm-2">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+
                                 </div>
 
                             </div>
@@ -53,59 +67,71 @@
                                                 <input disabled type="checkbox" class="form-check">
                                             </th>
                                             <th>Id</th>
-                                            <th>Images</th>
                                             <th>Title</th>
-                                            <th>View</th>
-                                            <th>Categories</th>
+                                            <th>creator</th>
+                                            <th>Publish</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
-                                        <% for( let index = 0; index < 10; index++ ) { %>
+                                        <% data.forEach((item)=> { %>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" class="form-check">
+                                                <input onchange="bulk_handler.add_item(`<%=item._id %>`)"
+                                                    type="checkbox" class="form-check">
                                             </td>
                                             <td>
-                                                <%= parseInt(Math.random()*10000) %>
+                                                <%= item._id %>
                                             </td>
                                             <td>
-                                                <img src="/img/1.jpg" style="height: 100px; width: 100px;" alt="">
+                                                <%=  item.title %>
                                             </td>
                                             <td>
-                                                Lorem ipsum dolor sit amet.
+                                                <%= item.creator?.username %>
                                             </td>
-                                            <td>
-                                                <%= parseInt(Math.random()*10000) %>
-                                            </td>
-                                            <td>A,B,C</td>
                                             <td>
                                                 <div class="form-check form-switch d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="flexSwitchCheckChecked" checked>
+                                                    <input <%= item.status?'checked':'' %> class="form-check-input"
+                                                        type="checkbox" role="switch"
+                                                        onchange="bulk_handler.changeStatus('<%= item._id %>')"
+                                                        id="flexSwitchCheckChecked<%= item._id %>">
                                                     <label class="form-check-label"
-                                                        for="flexSwitchCheckChecked"></label>
+                                                        for="flexSwitchCheckChecked<%= item._id %>"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch d-inline-block">
+                                                    <input <%= item.status?'checked':'' %> class="form-check-input"
+                                                        type="checkbox" role="switch"
+                                                        onchange="bulk_handler.changeStatus('<%= item._id %>')"
+                                                        id="flexSwitchCheckChecked<%= item._id %>">
+                                                    <label class="form-check-label"
+                                                        for="flexSwitchCheckChecked<%= item._id %>"></label>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                    <a href="/dashboard/blog/<%= item._id %>"
+                                                        class="btn btn-sm btn-primary">
                                                         <i class="fas fa-eye" title="Show"></i>
                                                         Show
                                                     </a>
-                                                    <a href="" class="btn btn-sm btn-warning">
+                                                    <a href="/dashboard/blog/<%= item._id %>/edit"
+                                                        class="btn btn-sm btn-warning">
                                                         <i class="fas fa-pencil" title="Edit"></i>
                                                         Edit
                                                     </a>
-                                                    <a href="#" class="btn btn-sm btn-danger">
+                                                    <a href="/dashboard/blog/<%= item._id %>/delete"
+                                                        onclick="return confirm(`are you want to delete!!!`)"
+                                                        class="btn btn-sm btn-danger">
                                                         <i class="fas fa-trash" title="Delete"></i>
                                                         Delete
                                                     </a>
                                                 </div>
                                             </td>
                                         </tr>
-                                        <% } %>
+                                        <% }) %>
 
                                     </tbody>
                                 </table>
@@ -115,16 +141,13 @@
                         <div class="card-footer">
                             <div class="d-flex justify-content-between ">
                                 <div class="left">
-                                    showing 1 to 10 of ss emtites
+                                    showing <span id="start_point"></span> to <span id="end_point"></span> of
+                                    <%= count %> entites
                                 </div>
                                 <div class="right">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination" id="paginate">
+
                                         </ul>
                                     </nav>
                                 </div>
@@ -133,8 +156,207 @@
                     </div>
                 </div>
             </div>
+
+
         </main>
 
     </div>
 </div>
+<script src="/js/csvExport.js"></script>
+<script>
+    let bulk_handler = {
+
+        selected_item: [],
+        selected_count: function () {
+            return this.selected_item.length;
+        },
+        find_item: function (id) {
+            return this.selected_item.find((i) => i == id);
+        },
+        add_item: function (id) {
+            if (this.find_item(id)) {
+                this.remove_item(id);
+            } else {
+                this.selected_item.push(id);
+                this.render()
+            }
+        },
+        remove_item: function (id) {
+            this.selected_item = this.selected_item.filter((i) => i != id)
+            this.render();
+        },
+        remove_all: function () {
+            this.selected_item = [];
+            this.render();
+        },
+        render: function () {
+            let total_select = [...document.querySelectorAll('.total_select')];
+            total_select.forEach((element) => {
+                element.innerHTML = this.selected_count();
+            })
+        },
+     
+        export_delete: async function () {
+            if (this.selected_item.length && window.confirm("Confirm delete?")) {
+                let response = await fetch('/dashboard/category/delete-by-id', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        exp_info: this.selected_item
+                    })
+                })
+                let deleteIds = await response.json();
+                if (deleteIds.deletedCount) {
+                    window.location.reload();
+                }
+            }
+        },
+        export_selected: async function () {
+            if (this.selected_item.length && window.confirm("export?")) {
+                let response = await fetch('/dashboard/category/export-info', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        exp_info: this.selected_item
+                    })
+                })
+                let categories = await response.json();
+
+                let rows = [];
+                categories.forEach((i) => {
+                    let {
+                        _id: id,
+                        title,
+                        creator
+                    } = i;
+                    rows.push([
+                        id,
+                        title,
+                        creator.username,
+                        creator._id
+                    ])
+                })
+                csvExport.setFileName("categories.csv")
+                    .setColumns(['id', 'title', 'creator', 'creator_id'])
+                    .addRows(rows)
+                    .exportFile();
+            }
+        },
+        changeStatus: async function (id) {
+            let event_status = event.target.checked;
+            console.log(event_status,id);
+            let response = await fetch('/dashboard/category/update-status', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id,
+                    status: event_status ? 1 : 0
+                })
+            })
+            let res_status = await response.json();
+            console.log(res_status);
+
+        },
+
+    }
+
+
+    function search() {
+        event.preventDefault();
+        let url = new URL(location.href);
+        let value = document.getElementById('search_box').value;
+        // let limit = url.searchParams.get('limit');
+        url.searchParams.set("key", value);
+        location.href = url.href;
+
+    }
+
+    function set_onChage() {
+        let url = new URL(location.href);
+        let limit = url.searchParams.get('limit');
+        url.searchParams.set("limit", event.target.value);
+        location.href = url.href;
+    }
+
+    function createPagination(paginationAmount = 10, dataCount = 0, currentPage = 1) {
+        const pageCount = Math.ceil(dataCount / paginationAmount);
+        const maxDisplayPage = 5;
+        let paginationHTML = '';
+
+        // Calculate the starting and ending page number for the displayed links
+        let startPage = 1;
+        let endPage = pageCount;
+
+        if (pageCount > maxDisplayPage) {
+            const middlePage = Math.ceil(maxDisplayPage / 2);
+            if (currentPage <= middlePage) {
+                endPage = maxDisplayPage;
+            } else if (currentPage >= pageCount - middlePage + 1) {
+                startPage = pageCount - maxDisplayPage + 1;
+            } else {
+                startPage = currentPage - middlePage + 1;
+                endPage = currentPage + middlePage - 1;
+            }
+        }
+
+        // Generate the HTML for the pagination
+        paginationHTML += `<li class="page-item">
+            <a class="page-link" onclick="goToPage(${currentPage-1})" href="/dashboard/category?page=${currentPage-1}">Pre</a>
+        </li>`;
+
+        if (startPage > 1) {
+            paginationHTML += `<li class="page-item">
+                <a class="page-link"  honclick="goToPage(1)"ref="/dashboard/category?page=1">1</a>
+            </li>`;
+
+            if (startPage > 2) {
+                paginationHTML += '<li class="page-item">...</li>';
+            }
+        }
+
+
+        document.getElementById("start_point").innerHTML = (currentPage * paginationAmount) - paginationAmount;
+        document.getElementById("end_point").innerHTML = (currentPage * paginationAmount);
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHTML += `<li class="page-item">
+                <a class="page-link" onclick="goToPage(${i})" href="/dashboard/category?page=${i}">${i}</a>
+            </li>`;
+        }
+
+        if (endPage < pageCount) {
+            if (endPage < pageCount - 1) {
+                paginationHTML += '<li class="page-item">...</li>';
+            }
+            paginationHTML += `<li class="page-item">
+                <a class="page-link" onclick="goToPage(=${pageCount})" href="/dashboard/category?page=${pageCount}">${pageCount}</a>
+            </li>`;
+        }
+
+        paginationHTML += `<li class="page-item">
+            <a class="page-link" onclick="goToPage(${currentPage+1})" href="/dashboard/category?page=${currentPage+1}">Next</a>
+        </li>`;
+
+        return paginationHTML;
+    }
+
+    function goToPage(pageNumber) {
+        console.log(`Loading data for page ${pageNumber}`);
+
+        let url = new URL(location.href);
+        let page = url.searchParams.get('page');
+        url.searchParams.set("page", pageNumber);
+        location.href = url.href;
+    }
+
+    // Assuming you have an element with id "paginate" in your HTML
+
+    document.getElementById("paginate").innerHTML = createPagination(+`<%= limit %>`, +`<%= count %>`, +`<%= page %>`);
+</script>
+
 <%- include('../layouts/backendJSScript') %>

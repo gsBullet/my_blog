@@ -42,6 +42,7 @@ const blog_details= async ()=>{
         writting_date: "2023-01-23",
         thumb_images: "img/1.jpg",
         published: true,
+        status: true,
         seo_title: "Cases against Yunus: DAG refuses to sign AG office statement against world leaders' concern",
         seo_description: "Deputy Attorney General Imran Ahmed Bhuiyan said today that he refrained from signing a statement, being prepared by the attorney general's office, protesting the recent letter from global figures to the",
         seo_keys: "Yunus, Dr-Yunus, Dr-yunus-judgement "

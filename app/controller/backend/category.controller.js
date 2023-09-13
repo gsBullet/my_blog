@@ -1,5 +1,6 @@
 const categoriesModel = require("../../models/categories.model");
 
+
 const controller = {
     all: async (req, res) => {
         let limit = 10;

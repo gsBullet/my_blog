@@ -10,6 +10,7 @@ const db_url = require('./config/db.config');
 const cookieParser = require('cookie-parser');
 server.use(cookieParser());
 server.set('json spaces', 4);
+const formData = require('express-form-data');
 
 
 
@@ -20,7 +21,7 @@ server.use(bodyParser.urlencoded({
 
 // parse application/json
 server.use(bodyParser.json())
-
+server.use(formData.parse());
 server.set('trust proxy', 1) // trust first proxy
 server.use(session({
     secret: 's3Cur3',

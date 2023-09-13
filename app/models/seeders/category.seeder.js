@@ -5,22 +5,22 @@ const db_url = require("../../../config/db.config");
 const categoriesModel = require("../categories.model");
 
 let categories = [{
-        title: "M",
+        title: "Opinion",
         creator: "64f5d087dd6cc063a71456cb",
 
     },
     {
-        title: "b",
+        title: "Sports",
         creator: "64f5d087dd6cc063a71456cb",
 
     },
     {
-        title: "c",
+        title: "Business",
         creator: "64f5d087dd6cc063a71456cb",
 
     },
     {
-        title: "d",
+        title: "Entertainment",
         creator: "64f5d087dd6cc063a71456cb",
 
     },
