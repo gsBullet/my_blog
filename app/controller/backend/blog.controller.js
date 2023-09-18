@@ -6,6 +6,23 @@ const blogModels = require("../../models/blog.models");
 const categoriesModel = require("../../models/categories.model");
 const translatorModel = require("../../models/translator.model");
 const writterModel = require("../../models/writter.model");
+var fs = require('fs-extra');
+const {
+    dirname
+} = require('path');
+const appDir = dirname(require.main.filename);
+
+const uploads_file = (file, id) => {
+    let file_name = parseInt(Math.random() * 1000) + id + file.name;
+    const path = appDir + "/public/uploads/posts/" + file_name;
+    fs.move(file.path, path, function (err) {
+        if (err) return console.arror(err);
+        // console.log("success");
+    })
+    thumb_image_path = "uploads/posts/" + file_name;
+    return thumb_image_path;
+
+}
 
 const blogDataValidate = async (req) => {
 
@@ -112,9 +129,10 @@ const controller = {
     },
     store: async (req, res) => {
         let validator = await blogDataValidate(req);
-        if(validator.hasError){
+        if (validator.hasError) {
             return res.status(422).json(validator)
         }
+        // console.log(req.files);
         let data = {
             title: req.body.title,
             short_description: req.body.short_description,
@@ -133,8 +151,28 @@ const controller = {
             creator: req.session.user._id
         }
 
-        let blog = await blogModels.create(data);
-        return res.status(200).json([req.body, blog]);
+        let blog = {};
+        try {
+            blog = await blogModels.create(data);
+            let thumb_image_path = "";
+            let related_images_path = [];
+            if (req.files?.thumb_image && req.files?.thumb_image.size) {
+                thumb_image_path = uploads_file(req.files.thumb_image, blog._id)
+            }
+            if (req.files?.related_images && req.files?.related_images[0].size) {
+                related_images_path = req.files.related_images.map((file) => uploads_file(file, blog._id))
+            }
+
+            blog.thumb_image = thumb_image_path;
+            blog.related_images = related_images_path;
+            blog.save();
+        } catch (error) {
+            return res.status(500).json({msg:"data uploading failed", error: error})
+        }
+        // return res.json({thumb_image_path,related_images_path });
+
+
+        return res.status(200).json( blog);
     },
 
     edit: async (req, res) => {
@@ -164,7 +202,7 @@ const controller = {
             _id: req.params.id
         }).exec();
 
-        return res.redirect(`/dashboard/${controller.router_prefix}`);
+        return res.redirect(`/dashboard/blog`);
     },
     show: async (req, res) => {
         let data = await blogModels.findOne().populate('creator');

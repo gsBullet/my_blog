@@ -17,7 +17,7 @@
                 <!-- <div class="border">
                     <h3 class="text-center">Dashboard content</h3>
                 </div> -->
-                <form method="POST" action="/dashboard/category/<%= data._id %>/edit">
+                <form method="POST" action="/dashboard/Blog/<%= data._id %>/edit">
                     <div class="card">
                         <div class="card-header">
                             Edit
@@ -27,6 +27,114 @@
                               <label for="title" class="form-label">Title</label>
                               <input value="<%= data.title %>" type="text" name="title" id="title" class="form-control" placeholder="" aria-describedby="helpId">
                               
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-8" style="border-right:2px solid gray">
+                                        <div class="form-group mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input value="<%= data.title %>" type="text" name="title" id="title" class="form-control"
+                                                placeholder="title">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="short_description" class="form-label">short_description</label>
+                                            <textarea value="<%= data.short_description %>" type="text" name="short_description" id="short_description"
+                                                class="form-control"></textarea>
+    
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="description" class="form-label">description</label>
+                                            <textarea value="<%= data.description %>" type="text" name="description" id="description"
+                                                class="form-control"></textarea>
+    
+                                        </div>
+                                        <div class="seo_info">
+                                            <h3>SEO info</h3>
+                                            <div class="form-group mb-3">
+                                                <label for="seo_title" class="form-label">Seo Title</label>
+                                                <input value="<%= data.seo_title %>" type="text" name="seo_title" id="seo_title" class="form-control">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="seo_description" class="form-label">seo description</label>
+                                                <textarea value="<%= data.seo_description %>" type="text" name="seo_description" id="seo_description"
+                                                    class="form-control">
+                                                </textarea>
+    
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="seo_keys" class="form-label">seo_keys</label>
+                                                <textarea value="<%= data.seo_keys %>" type="text" name="seo_keys" id="seo_keys" class="form-control">
+                                                </textarea>
+    
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="tags" class="form-label">tags</label>
+                                                <select value="<%= data.tag %>" type="text" multiple name="tags[]" id="tags"
+                                                    class="form-control select_tags">
+                                                </select>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group mb-3">
+                                            <label for="category" class="form-label">category</label>
+                                            <select multiple name="category[]" id="category"
+                                                class="form-select category_select">
+                                                <% categories.forEach(category => { %>
+                                                <option value="<%= category._id %>"><%= category.title %></option>
+                                                <% }) %>
+    
+                                            </select>
+    
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="writter" class="form-label">writter</label>
+                                            <select name="writter[]" id="writter" class="form-select author_select">
+                                                <% writters.forEach(writter => { %>
+                                                <option value="<%= writter._id %>"><%= writter.name %></option>
+                                                <% }) %>
+                                            </select>
+    
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="translator" class="form-label">translator</label>
+                                            <select multiple name="translator[]" id="translator"
+                                                class="form-select translator_select">
+                                                <% translators.forEach(translator => { %>
+                                                <option value="<%= translator._id %>"><%= translator.name %></option>
+                                                <% }) %>
+                                            </select>
+    
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="thumb_image">thumb_images</label>
+                                            <input type="file" name="thumb_image" id="thumb_image" accept="image/*"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="related_images">related_images</label>
+                                            <input multiple type="file" name="related_images[]" id="related_images"
+                                                accept="image/*" class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="writting_date" class="form-label">writting_date</label>
+                                            <input type="date" name="writting_date" id="writting_date" class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <div>
+                                                <label for="published" class="form-label"> is published</label>
+                                            </div>
+                                            <label for="yes">
+                                                <input type="radio" name="published" id="yes" value="yes">Yes
+                                            </label> &nbsp; &nbsp;
+                                            <label for="no">
+                                                <input type="radio" name="published" id="no" value="no"> No
+                                            </label>
+    
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                         </div>

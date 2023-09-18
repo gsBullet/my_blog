@@ -4,6 +4,8 @@ module.exports = (req, res, server) => {
     var {
         token
     } = res.cookies;
+    server.locals.checkIsAuth = false;
+    server.locals.user = {};
     if (token) {
         try {
             let decode = jwt.verify(token, "e42f16cd-194d-46a3-a40a-4c8c2ac04d79");

@@ -19,7 +19,8 @@
                 <div class="border">
                     <h3 class="text-center">Dashboard content</h3>
                 </div> -->
-                <form method="POST" onsubmit="saveData()" id="form_error" action="/dashboard/blog/create">
+                <form method="POST" onsubmit="saveData()" id="form_error" action="/dashboard/blog/create"
+                    enctype="multipart/form-data">
                     <div class="card my-5">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -29,11 +30,11 @@
                                 </h3>
                                 <div>
                                     <a class="btn btn-sm btn-outline-success" href="/dashboard/blog">
-                                       <i class="fa fa-arrow-left" aria-hidden="true"></i> back
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i> back
                                     </a>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -115,14 +116,23 @@
 
                                     </div>
                                     <div class="form-group mb-3">
+                                        <div>
+                                            <img width="120px" src="" id="thumb_image_preview" alt="">
+                                        </div>
+
                                         <label for="thumb_image">thumb_images</label>
-                                        <input type="file" name="thumb_image" id="thumb_image" accept="image/*"
-                                            class="form-control">
+                                        <input type="file" name="thumb_image" id="thumb_image"
+                                            onchange="img_preview_function()" accept="image/*" class="form-control">
+
+
                                     </div>
                                     <div class="form-group mb-3">
+                                        <div id="related_image_preview">
+
+                                        </div>
                                         <label for="related_images">related_images</label>
                                         <input multiple type="file" name="related_images[]" id="related_images"
-                                            accept="image/*" class="form-control">
+                                            accept="image/*" onchange="related_images_function()" class="form-control">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="writting_date" class="form-label">writting_date</label>
@@ -151,11 +161,26 @@
                 </form>
             </div>
         </main>
-
+        <style>
+            img {
+                object-fit: cover;
+            }
+        </style>
     </div>
 </div>
 <%- include('../layouts/backendJSScript') %>
 <script>
+    function img_preview_function() {
+        thumb_image_preview.src = URL.createObjectURL(event.target.files[0])
+
+    };
+
+    function related_images_function() {
+        related_image_preview.innerHTML = [...event.target.files].map((file) =>
+            `<img width="100px" src="${URL.createObjectURL(file)}"  alt="">`)
+
+
+    };
     $(document).ready(function () {
         tinymce.init({
             selector: '#short_description',
@@ -181,7 +206,7 @@
         $('.translator_select').val([]).change();
         $('.author_select').val([]).change();
         $('.select_tags').val([]).change();
-        
+
     }
 
     async function saveData() {
@@ -190,34 +215,38 @@
         [...document.querySelectorAll('.form_error')].forEach(element => {
             element.remove()
         });
+
         let formData = new FormData(event.target);
         let response = await fetch(`${event.target.action}`, {
             method: event.target.method,
             body: formData
-        })
-        // console.log(response);
+        });
         let status = response.status;
         let data = await response.json();
 
         if (data.hasError) {
-            s_alert("data validation error","error")
+            s_alert("data validation error", "error")
             let errors = data.errors;
             errors.forEach(element => {
                 document.getElementById(element.path)?.parentNode.insertAdjacentHTML('beforeend',
-                ` <div class = "form_error text-danger" >
+                    ` <div class = "form_error text-danger" >
                             ${element.msg}
                 </div>
-                `); 
-                
-            });
-        }
-        else{
-            s_alert("blog created successfully","success");
-            document.getElementById('form_error').reset();
-            reset_select();
-            
-        }
-        console.log(data);
+                `);
 
+            });
+
+            return 0;
+        };
+        if ([400, 500, 404, 422, 505].includes(status)) {
+            s_alert(data?.error?._message, "error");
+            throw new Error(data?.error?.message)
+        } else {
+            s_alert("blog created successfully", "success");
+            document.getElementById('form_error').reset();
+            form.reset();
+            reset_select();
+
+        }
     }
 </script>

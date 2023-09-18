@@ -46,7 +46,7 @@ module.exports = mongoose.model('blogs', mongoose.Schema({
     },
     thumb_image: {
         type: String,
-        required: false
+        // required: false
     },
     related_images: [String],
     published: {

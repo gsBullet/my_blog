@@ -8,6 +8,8 @@ router
     .get('/dashboard/blog/:id/edit', blogController.edit)
     .get('/dashboard/blog/:id', blogController.show)
 
+    .get('/dashboard/blog/:id/delete',blogController.delete)
+
     .get('/dashboard/blog',blogController.all)
 
 
