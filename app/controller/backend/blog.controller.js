@@ -132,12 +132,12 @@ const controller = {
         if (validator.hasError) {
             return res.status(422).json(validator)
         }
-        // console.log(req.files);
+        
         let data = {
             title: req.body.title,
             short_description: req.body.short_description,
             description: req.body.description,
-            categories: req.body["categories"],
+            category: req.body["category"],
             writter: req.body["writter"],
             writting_date: req.body.writting_date,
             translator: req.body["translator"],
@@ -171,16 +171,22 @@ const controller = {
         }
         // return res.json({thumb_image_path,related_images_path });
 
-
-        return res.status(200).json( blog);
+        // console.log(blog);
+        return res.status(200).json(blog);
     },
 
     edit: async (req, res) => {
+        let categories = await categoriesModel.find();
+        let writters = await writterModel.find();
+        let translators = await translatorModel.find();
         let data = await blogModels.findOne().where({
             _id: req.params.id
         })
         return res.render(`backend/${controller.folder_prefix}/edit`, {
-            data
+            data,
+            categories,
+            translators,
+            writters
         })
     },
     update: async (req, res) => {
@@ -188,12 +194,12 @@ const controller = {
             title: req.body.title,
             creator: req.session.user._id
         }
-        let category = await blogModels.findOne().where({
+        let blog = await blogModels.findOne().where({
             _id: req.params.id
         }).exec();
-        category.title = data.title;
-        category.category = data.creator;
-        category.save();
+        blog.title = data.title;
+        blog.category = data.creator;
+        blog.save();
         return res.redirect(`/dashboard/${controller.router_prefix}`);
     },
     delete: async (req, res) => {

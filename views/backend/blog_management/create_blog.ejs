@@ -123,8 +123,6 @@
                                         <label for="thumb_image">thumb_images</label>
                                         <input type="file" name="thumb_image" id="thumb_image"
                                             onchange="img_preview_function()" accept="image/*" class="form-control">
-
-
                                     </div>
                                     <div class="form-group mb-3">
                                         <div id="related_image_preview">
@@ -187,6 +185,12 @@
         });
         tinymce.init({
             selector: '#description',
+        });
+        tinymce.init({
+            selector: '#seo_description',
+        });
+        tinymce.init({
+            selector: '#seo_keys',
         });
         let configs = {
             placeholder: 'choose an option',

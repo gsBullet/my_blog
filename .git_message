@@ -1,3 +1,3 @@
 git add .
-git commit -m " blog management app single and multiple file upload, error handling"
+git commit -m " blog management app  Blog update show data into form"
 git push -u origin main
